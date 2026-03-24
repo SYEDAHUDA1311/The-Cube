@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eid Mubarak Premium</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background: linear-gradient(to bottom, #eef4f8, #cfe3f1);
+}
+
+/* Background image */
+body::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background: url('/mnt/data/51f94dac-9c8f-43bf-9e0e-aa8a5bee74b5.png');
+    background-size: cover;
+    background-position: center;
+    opacity:0.5;
+    z-index:-1;
+}
+
+/* Glow */
+body::after{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+    pointer-events:none;
+}
+
+/* Moon */
+.moon{
+    position:absolute;
+    top:60px;
+    right:120px;
+    width:80px;
+    height:80px;
+    background:#fff;
+    border-radius:50%;
+    box-shadow:0 0 30px white;
+}
+
+/* Clouds */
+.cloud{
+    position:absolute;
+    bottom:0;
+    width:300px;
+    height:100px;
+    background:white;
+    border-radius:100px;
+    opacity:0.6;
+    animation: moveClouds 20s linear infinite;
+}
+
+.cloud:nth-child(1){ left:-300px; animation-delay:0s; }
+.cloud:nth-child(2){ left:-500px; animation-delay:5s; }
+.cloud:nth-child(3){ left:-700px; animation-delay:10s; }
+
+@keyframes moveClouds{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(2000px); }
+}
+
+/* Floating lights */
+.light{
+    position:absolute;
+    width:10px;
+    height:10px;
+    background:gold;
+    border-radius:50%;
+    box-shadow:0 0 15px gold;
+    animation: float 6s infinite ease-in-out;
+}
+
+@keyframes float{
+    0%{ transform: translateY(0); opacity:1; }
+    50%{ transform: translateY(-50px); }
+    100%{ transform: translateY(0); }
+}
+
+/* Sparkles */
+.sparkle{
+    position:absolute;
+    color:white;
+    animation: sparkle 3s infinite;
+}
+
+@keyframes sparkle{
+    0%,100%{ opacity:0; }
+    50%{ opacity:1; }
+}
+
+/* Cube */
+#Page{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    perspective:1000px;
+}
+
+#cube{
+    height:200px;
+    width:200px;
+    transform-style: preserve-3d;
+    animation: rotateCube 6s infinite linear;
+    cursor:pointer;
+    position:relative;
+    z-index:10;
+}
+
+@keyframes rotateCube{
+    0%{ transform: rotateX(0) rotateY(0); }
+    100%{ transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* Glass cube */
+.face{
+    position:absolute;
+    height:200px;
+    width:200px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow: inset 0 0 20px rgba(0,150,255,0.3);
+    transition:1s;
+}
+
+.front{ transform: translateZ(100px); }
+.back{ transform: translateZ(-100px); }
+.right{ transform: rotateY(90deg) translateZ(100px); }
+.left{ transform: rotateY(-90deg) translateZ(100px); }
+.top{ transform: rotateX(90deg) translateZ(100px); }
+.bottom{ transform: rotateX(-90deg) translateZ(100px); }
+
+/* Message */
+#message{
+    position:absolute;
+    top:-120px;
+    left:50%;
+    transform:translateX(-50%) scale(0.2);
+    font-family:'Great Vibes', cursive;
+    font-size:80px;
+    color:#1e90ff;
+    text-shadow:0 0 20px rgba(30,144,255,0.7);
+    opacity:0;
+    transition:1.5s;
+}
+
+#cube.active ~ #message{
+    transform:translateX(-50%) scale(1.2);
+    opacity:1;
+}
+
+/* Break */
+#cube.active .front{ transform: translateZ(400px); opacity:0; }
+#cube.active .back{ transform: translateZ(-400px); opacity:0; }
+#cube.active .right{ transform: rotateY(90deg) translateZ(400px); opacity:0; }
+#cube.active .left{ transform: rotateY(-90deg) translateZ(400px); opacity:0; }
+#cube.active .top{ transform: rotateX(90deg) translateZ(400px); opacity:0; }
+#cube.active .bottom{ transform: rotateX(-90deg) translateZ(400px); opacity:0; }
+
+/* Stars */
+#stars{
+    position:absolute;
+    top:50%;
+    left:50%;
+}
+
+.star{
+    position:absolute;
+    color:#1e90ff;
+    animation: fly 1s ease forwards;
+}
+
+@keyframes fly{
+    from{ transform: translate(0,0); opacity:1; }
+    to{ transform: translate(var(--x), var(--y)); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="moon"></div>
+
+<div class="cloud"></div>
+<div class="cloud"></div>
+<div class="cloud"></div>
+
+<!-- floating lights -->
+<div class="light" style="top:20%; left:30%;"></div>
+<div class="light" style="top:40%; left:60%;"></div>
+<div class="light" style="top:30%; left:80%;"></div>
+
+<!-- sparkles -->
+<div class="sparkle" style="top:25%; left:50%;">✨</div>
+<div class="sparkle" style="top:35%; left:20%;">✨</div>
+
+<div id="Page">
+    <div id="cube" onclick="breakCube()">
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face right"></div>
+        <div class="face left"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+    </div>
+
+    <div id="stars"></div>
+    <div id="message">Eid Mubarak</div>
+</div>
+
+<script>
+function breakCube(){
+    document.getElementById("cube").classList.toggle("active");
+    createStars();
+}
+
+function createStars(){
+    let container = document.getElementById("stars");
+
+    for(let i=0;i<100;i++){
+        let star = document.createElement("div");
+        star.classList.add("star");
+        star.innerHTML="✨";
+
+        let x = (Math.random()-0.5)*1000+"px";
+        let y = (Math.random()-0.5)*1000+"px";
+
+        star.style.setProperty("--x", x);
+        star.style.setProperty("--y", y);
+
+        container.appendChild(star);
+
+        setTimeout(()=>{ star.remove(); },1000);
+    }
+}
+</script>
+
+</body>
+</html>
